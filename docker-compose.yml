@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 networks:
   docker-https-network:
@@ -8,6 +8,8 @@ services:
   front-svc:
     image: nginx:latest
     restart: on-failure
+    volumes:
+      - ./rootfs/front:/usr/share/nginx/html
     networks:
       - docker-https-network
     ports:
@@ -35,5 +37,5 @@ services:
     ports:
       - "8083:443"
       - "8080:80"
-      - "${SSL_PORT}:443"
-      - "${PORT}:80"
+      - "443:443"
+      - "80:80"

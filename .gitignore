@@ -1,0 +1,7 @@
+.env
+rootfs/config/*/*
+rootfs/config/*.conf
+rootfs/config/nginx/proxy-confs/*.sample
+rootfs/config/nginx/proxy-confs/_readme
+!rootfs/config/nginx/site-confs*
+!rootfs/config/nginx/proxy-confs*

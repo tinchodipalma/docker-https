@@ -1,0 +1,39 @@
+version: '2'
+
+networks:
+  docker-https-network:
+    driver: bridge
+
+services:
+  front-svc:
+    image: nginx:latest
+    restart: on-failure
+    networks:
+      - docker-https-network
+    ports:
+      - "8081:80"
+
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    restart: on-failure
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./rootfs/config:/config
+    environment:
+      - PGID=${LETSENCRYPT_PGID}
+      - PUID=${LETSENCRYPT_PUID}
+      - URL=${LETSENCRYPT_URL}
+      - SUBDOMAINS=${LETSENCRYPT_SUBDOMAINS}
+      - VALIDATION=${LETSENCRYPT_VALIDATION}
+      - STAGING=${LETSENCRYPT_STAGING}
+      - TZ=${LETSENCRYPT_TZ}
+      - EMAIL=${LETSENCRYPT_EMAIL}
+    networks: 
+      - docker-https-network
+    ports:
+      - "8083:443"
+      - "8080:80"
+      - "${SSL_PORT}:443"
+      - "${PORT}:80"
